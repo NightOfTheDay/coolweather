@@ -1,22 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--天气显示UI总和-->
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary">
+    <!--背景图-->
     <ImageView
         android:id="@+id/bing_pic_img"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"/>
+
+
+    <!--页面内容显示-->
+    <!--滑动块-->
     <android.support.v4.widget.DrawerLayout
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <!--下拉刷新-->
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/swipe_refresh"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+            <!--滚动内容框-->
             <ScrollView
                 android:id="@+id/weather_layout"
                 android:layout_width="match_parent"
@@ -24,21 +32,28 @@
                 android:scrollbars="none"
                 android:overScrollMode="never"
                 >
+                <!--内容-->
                 <LinearLayout
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fitsSystemWindows="true"
                     >
+                    <!--标题-->
                     <include layout="@layout/title"/>
+                    <!--当天度数-->
                     <include layout="@layout/now"/>
+                    <!--预报-->
                     <include layout="@layout/forecast"/>
+                    <!--空气质量-->
                     <include layout="@layout/api"/>
+                    <!--生活建议-->
                     <include layout="@layout/suggestion"/>
                 </LinearLayout>
             </ScrollView>
         </android.support.v4.widget.SwipeRefreshLayout>
 
+        <!--滑动菜单-->
         <fragment
             android:id="@+id/choose_area_fragment"
             android:name="com.coolweather.android.ChooseAreaFragment"
@@ -46,5 +61,4 @@
             android:layout_height="match_parent"
             android:layout_gravity="start"/>
     </android.support.v4.widget.DrawerLayout>
-
 </FrameLayout>

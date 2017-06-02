@@ -10,6 +10,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.WebView;
@@ -66,6 +67,7 @@ public class WeatherActivity extends AppCompatActivity {
 
     private Button navButton;
 
+    private static final String TAG = "WeatherActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,16 +94,16 @@ public class WeatherActivity extends AppCompatActivity {
         carWashText = (TextView) findViewById(R.id.car_wash_text);
         sportText = (TextView) findViewById(R.id.sport_text);
         bingPicImg = (ImageView) findViewById(R.id.bing_pic_img);
+        /*滑动菜单*/
         drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         navButton = (Button)findViewById(R.id.nav_button);
-
+        /*点击显示滑动菜单*/
         navButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 drawerLayout.openDrawer(GravityCompat.START);
             }
         });
-
 
         //获取缓存信息
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -150,6 +152,7 @@ public class WeatherActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 final String responseText = response.body().string();
+                Log.d(TAG, "onResponse: "+responseText);
                 final Weather weather = Utility.handleWeatherResponse(responseText);
                 runOnUiThread(new Runnable() {
                     @Override
@@ -196,7 +199,8 @@ public class WeatherActivity extends AppCompatActivity {
         //启动定时服务
         Intent intent = new Intent(this,AutoUpdateService.class);
         startService(intent);
-        //加载数据
+
+        //当天度数加载数据
         String cityName = weather.basic.cityName;
         String updateTime = weather.basic.update.updateTime.split(" ")[1];
         String degree = weather.now.temperature+"度";
@@ -205,33 +209,41 @@ public class WeatherActivity extends AppCompatActivity {
         titleUpdateTime.setText(updateTime);
         degreeText.setText(degree);
         weatherInfoText.setText(weatherInfo);
+
+        /*预报块加载数据*/
         forecastLayout.removeAllViews();//移出所有子视图
         for(Forecast forecast:weather.forecastList){
+            /*预报子块加载数据*/
             View view = LayoutInflater.from(this).inflate(R.layout.forecast_item,forecastLayout,false);
             TextView dateText = (TextView) view.findViewById(R.id.date_text);
             TextView infoText = (TextView) view.findViewById(R.id.info_text);
             TextView maxText = (TextView) view.findViewById(R.id.max_text);
             TextView minText = (TextView) view.findViewById(R.id.min_text);
-
             dateText.setText(forecast.date);
             infoText.setText(forecast.more.info);
             maxText.setText(forecast.temperature.max);
             minText.setText(forecast.temperature.min);
             forecastLayout.addView(view);
         }
-        if (weather.api != null){
-            apiText.setText(weather.api.city.api);
-            pm25Text.setText(weather.api.city.pm25);
+
+        /*空气质量块加载数据*/
+        if (weather.aqi != null){
+            apiText.setText(weather.aqi.city.aqi);
+            pm25Text.setText(weather.aqi.city.pm25);
         }else{
             apiText.setText("无");
             pm25Text.setText("无");
         }
+
+        /*生活建议块加载数据*/
         String comfort = "舒适度：" + weather.suggestion.comfort.info;
         String carWash = "洗车指数：" + weather.suggestion.carWash.info;
         String sport = "运动建议：" + weather.suggestion.sport.info;
         comfortText.setText(comfort);
         carWashText.setText(carWash);
         sportText.setText(sport);
+
+        /*内容块显示*/
         weatherLayout.setVisibility(View.VISIBLE);
     }
 
