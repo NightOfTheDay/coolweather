@@ -33,6 +33,9 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
+/**
+ * 天气显示
+ */
 public class WeatherActivity extends AppCompatActivity {
 
     private ScrollView weatherLayout;
@@ -206,7 +209,7 @@ public class WeatherActivity extends AppCompatActivity {
         String degree = weather.now.temperature+"度";
         String weatherInfo = weather.now.more.info;
         titleCity.setText(cityName);
-        titleUpdateTime.setText(updateTime);
+        titleUpdateTime.setText("更新时间："+updateTime);
         degreeText.setText(degree);
         weatherInfoText.setText(weatherInfo);
 

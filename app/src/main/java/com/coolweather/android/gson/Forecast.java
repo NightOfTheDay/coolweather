@@ -3,6 +3,7 @@ package com.coolweather.android.gson;
 import com.google.gson.annotations.SerializedName;
 
 /**
+ * 一周天气数据
  * Created by Administrator on 2017/6/1.
  */
 

@@ -1,6 +1,7 @@
 package com.coolweather.android.gson;
 
 /**
+ * 空气质量
  * Created by Administrator on 2017/6/1.
  */
 

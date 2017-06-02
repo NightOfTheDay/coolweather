@@ -20,6 +20,9 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
+/**
+ * 消息跟新服务
+ */
 public class AutoUpdateService extends Service {
     public AutoUpdateService() {
     }

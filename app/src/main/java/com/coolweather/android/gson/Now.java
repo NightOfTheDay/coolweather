@@ -3,6 +3,7 @@ package com.coolweather.android.gson;
 import com.google.gson.annotations.SerializedName;
 
 /**
+ * 当天度数
  * Created by Administrator on 2017/6/1.
  */
 

@@ -3,7 +3,7 @@ package com.coolweather.android.gson;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * 描述
+ * 生活建议
  * Created by Administrator on 2017/6/1.
  */
 
