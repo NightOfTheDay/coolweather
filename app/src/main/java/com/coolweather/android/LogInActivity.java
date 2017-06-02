@@ -100,8 +100,15 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.log_button_affirm:
+                String editAccounts = editAccount.getText().toString();
+                String editPasss = editPass.getText().toString();
+
+                List<User> users = DataSupport.where("(account=? or phone=?) and pass=?","").find(User.class);
+
+
+
                 finish();
-                //注册
+                //登录成功
                 Intent i = new Intent(this, MainActivity.class);
                 startActivity(i);
                 break;
