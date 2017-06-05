@@ -91,7 +91,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     User u = new User();
                     u.setAccount(editAccount.getText().toString());
                     u.setPass(editPass.getText().toString());
-                    u.setPass(editPhone.getText().toString());
+                    u.setPhone(editPhone.getText().toString());
+                    u.setRemember("0");
+                    u.setQuit("0");
                     u.save();
                     //提示
                     AlertDialog.Builder aelrt = new AlertDialog.Builder(RegisterActivity.this);

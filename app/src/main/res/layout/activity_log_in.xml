@@ -4,6 +4,9 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+   <!-- <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />-->
     <!--标题-->
     <include layout="@layout/public_title"/>
 
@@ -53,6 +56,19 @@
                 android:hint="请输入密码"/>
         </LinearLayout>
 
+        <!--按钮-->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <CheckBox
+                android:id="@+id/cb"
+                android:text="记住账号密码"
+                android:textSize="20sp"
+                android:layout_marginLeft="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
 
 
         <!--按钮-->

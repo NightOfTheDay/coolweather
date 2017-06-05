@@ -2,15 +2,18 @@ package com.coolweather.android;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -52,9 +55,9 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
 
     private ImageView imagePass;
 
+    private CheckBox checkBox;
 
-    // 有效验证
-    private Boolean b = true;
+
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -62,21 +65,19 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
     private GoogleApiClient client;
 
 
-    public boolean onTouchEvent(MotionEvent event) {
-        if (null != this.getCurrentFocus()) {
-            /**
-             * 点击空白位置 隐藏软键盘
-             */
-            InputMethodManager mInputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-            return mInputMethodManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
-        }
-        return super.onTouchEvent(event);
-    }
 
+
+    /**
+     * 组件初始化
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
+
+
+
         //初始化
         editAccount = (EditText) findViewById(R.id.log_edit_account);
         editPass = (EditText) findViewById(R.id.log_edit_pass);
@@ -84,17 +85,18 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
         buttonReturn = (Button) findViewById(R.id.log_button_return);
         backButton = (Button) findViewById(R.id.back_button);
         titleText = (TextView) findViewById(R.id.title_text);
+        checkBox = (CheckBox)findViewById(R.id.cb);
         //点击事件
         buttonAffirm.setOnClickListener(this);
         buttonReturn.setOnClickListener(this);
         backButton.setOnClickListener(this);
         titleText.setText("登录");
 
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        //键盘收起
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
+    private static final String TAG = "LogInActivity";
     //点击事件触发
     @Override
     public void onClick(View v) {
@@ -102,15 +104,27 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
             case R.id.log_button_affirm:
                 String editAccounts = editAccount.getText().toString();
                 String editPasss = editPass.getText().toString();
+                // /查询账号密码信息
+                Cursor cursor = DataSupport.findBySQL("select * from User where account=? or phone=? and pass=?",editAccounts,editAccounts,editPasss);
+                //判断是否有账号信息
+                if(!cursor.moveToFirst()){
+                    toast("账号或密码有误");
+                } else {
+                    //清空用户信息数据库
+                    //DataSupport.deleteAll(User.class);
+                    User user = new User();
+                    //判断是否记住密码
+                    if (checkBox.isChecked()){
+                        user.setRemember("1");
+                    }
+                    user.setQuit("1");//退出状态
+                    user.updateAll("account=? or phone=?",editAccounts,editAccounts);
+                    finish();
+                    //登录成功
+                    Intent i = new Intent(this, MainActivity.class);
+                    startActivity(i);
+                }
 
-                List<User> users = DataSupport.where("(account=? or phone=?) and pass=?","").find(User.class);
-
-
-
-                finish();
-                //登录成功
-                Intent i = new Intent(this, MainActivity.class);
-                startActivity(i);
                 break;
             case R.id.log_button_return:
                 //注册
@@ -132,8 +146,24 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
     }
 
     /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     * 键盘收起
+     * @param event
+     * @return
+     */
+    public boolean onTouchEvent(MotionEvent event) {
+        if (null != this.getCurrentFocus()) {
+            /**
+             * 点击空白位置 隐藏软键盘
+             */
+            InputMethodManager mInputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+            return mInputMethodManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
+        }
+        return super.onTouchEvent(event);
+    }
+
+    /**
+     * 键盘收起
+     * @return
      */
     public Action getIndexApiAction() {
         Thing object = new Thing.Builder()
@@ -147,23 +177,4 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
                 .build();
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client.connect();
-        AppIndex.AppIndexApi.start(client, getIndexApiAction());
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        AppIndex.AppIndexApi.end(client, getIndexApiAction());
-        client.disconnect();
-    }
 }
