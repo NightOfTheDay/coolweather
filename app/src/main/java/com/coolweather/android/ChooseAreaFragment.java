@@ -42,6 +42,7 @@ public class ChooseAreaFragment extends Fragment {
     public static final int LEVEL_COUNTY = 2;
     private ProgressDialog progressDialog;//提示框
     private TextView titleText;
+    private TextView locationText;
     private Button backButton;
     private ListView listView;
     private ArrayAdapter<String> adapter;
@@ -71,6 +72,25 @@ public class ChooseAreaFragment extends Fragment {
      * 当前选中的级别
      */
     private int currentLevel;
+    /**
+     * 定位
+     */
+    private String location;
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        if (!"定位失败".equals(location)){
+            locationText.setClickable(true);
+            locationText.setText(location);
+        }else {
+            locationText.setText("定位："+location);
+        }
+
+        this.location = location;
+    }
 
     /**
      * 加载碎片初始化
@@ -88,8 +108,12 @@ public class ChooseAreaFragment extends Fragment {
         listView = (ListView) view.findViewById(R.id.list_view);
         adapter = new ArrayAdapter<String>(getContext(),android.R.layout.simple_list_item_1,dataList);
         listView.setAdapter(adapter);
+        locationText = (TextView) view.findViewById(R.id.location_text);
+
         return view;
     }
+
+
 
     /**
      * UI加载完触发-设置点击事件
@@ -98,6 +122,25 @@ public class ChooseAreaFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        //定位点击事件
+        locationText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (getActivity() instanceof MainActivity){
+                    Intent intent = new Intent(getActivity(),WeatherActivity.class);
+                    intent.putExtra("weather_id",location);
+                    startActivity(intent);
+                    getActivity().finish();
+                }else if (getActivity() instanceof WeatherActivity){
+                    WeatherActivity activity = (WeatherActivity)getActivity();
+                    activity.drawerLayout.closeDrawers();
+                    activity.swipeRefresh.setRefreshing(true);
+                    activity.requestWeather(location);
+                }
+            }
+        });
+
+
 
         //设置ListView点击事件
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -146,6 +189,7 @@ public class ChooseAreaFragment extends Fragment {
      * 查询全国所有的省，优先从数据库查询，如果没有查询到再去服务器上查询
      */
     private void queryProvinces(){
+
         titleText.setText("中国");
         backButton.setVisibility(View.GONE);//按钮显示隐藏
         provinceList = DataSupport.findAll(Province.class);//从数据库查询数据

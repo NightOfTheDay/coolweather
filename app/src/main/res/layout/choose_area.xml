@@ -10,6 +10,14 @@
 
     <!--标题栏-->
    <include layout="@layout/public_title"/>
+    <TextView
+        android:id="@+id/location_text"
+        android:layout_margin="20dp"
+        android:textSize="20sp"
+        android:clickable="false"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"/>
     <!--内容-->
     <ListView
         android:id="@+id/list_view"
