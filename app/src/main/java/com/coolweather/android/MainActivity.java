@@ -31,6 +31,9 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ * 城市选择 定位活动
+ */
 public class MainActivity extends AppCompatActivity {
     public LocationClient mLocationClient;
     static String location = null;
@@ -48,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
         //判断跳那个活动
         if (prefs.getString("weather",null) != null){
-            Intent intent = new Intent(MainActivity.this,WeatherActivity.class);
+            Intent intent = new Intent(MainActivity.this,CentreActivity.class);
             startActivity(intent);
             finish();
         }
@@ -131,7 +134,6 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onReceiveLocation(BDLocation bdLocation) {
             location = bdLocation.getCity();
-            Log.d("MainActivity", "onReceiveLocation: "+location);
             if (location!=null){
                 runOnUiThread(new Runnable() {
                     @Override

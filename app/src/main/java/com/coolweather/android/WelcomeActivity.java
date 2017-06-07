@@ -78,8 +78,8 @@ public class WelcomeActivity extends AppCompatActivity {
             //跳转Activity
             if(DATA){
                 finish();
-                //跳转主页
-                Intent i = new Intent(WelcomeActivity.this, MainActivity.class);
+                //跳转中心活动
+                Intent i = new Intent(WelcomeActivity.this, CentreActivity.class);
                 startActivity(i);
             }else{
                 finish();

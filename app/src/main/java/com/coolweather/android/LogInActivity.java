@@ -120,7 +120,7 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
                     user.setQuit("1");//退出状态
                     user.updateAll("account=? or phone=?",editAccounts,editAccounts);
                     finish();
-                    //登录成功
+                    //登录成功，跳转城市选择活动
                     Intent i = new Intent(this, MainActivity.class);
                     startActivity(i);
                 }

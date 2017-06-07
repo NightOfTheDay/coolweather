@@ -127,15 +127,16 @@ public class ChooseAreaFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (getActivity() instanceof MainActivity){
-                    Intent intent = new Intent(getActivity(),WeatherActivity.class);
+                    Intent intent = new Intent(getActivity(),CentreActivity.class);
                     intent.putExtra("weather_id",location);
                     startActivity(intent);
                     getActivity().finish();
-                }else if (getActivity() instanceof WeatherActivity){
-                    WeatherActivity activity = (WeatherActivity)getActivity();
-                    activity.drawerLayout.closeDrawers();
-                    activity.swipeRefresh.setRefreshing(true);
-                    activity.requestWeather(location);
+                }else if (getActivity() instanceof CentreActivity){
+                    CentreActivity activity = (CentreActivity)getActivity();
+                    WeatherFragment weatherFragment = (WeatherFragment)activity.getSupportFragmentManager().findFragmentByTag("10");
+                    weatherFragment.drawerLayout.closeDrawers();
+                    weatherFragment.swipeRefresh.setRefreshing(true);
+                    weatherFragment.requestWeather(location);
                 }
             }
         });
@@ -155,15 +156,16 @@ public class ChooseAreaFragment extends Fragment {
                 } else if (currentLevel == LEVEL_COUNTY){
                     String weatherId = countyList.get(position).getWeatherId();
                     if (getActivity() instanceof MainActivity){
-                        Intent intent = new Intent(getActivity(),WeatherActivity.class);
+                        Intent intent = new Intent(getActivity(),CentreActivity.class);
                         intent.putExtra("weather_id",weatherId);
                         startActivity(intent);
                         getActivity().finish();
-                    }else if (getActivity() instanceof WeatherActivity){
-                        WeatherActivity activity = (WeatherActivity)getActivity();
-                        activity.drawerLayout.closeDrawers();
-                        activity.swipeRefresh.setRefreshing(true);
-                        activity.requestWeather(weatherId);
+                    }else if (getActivity() instanceof CentreActivity){
+                        CentreActivity activity = (CentreActivity)getActivity();
+                        WeatherFragment weatherFragment = (WeatherFragment)activity.getSupportFragmentManager().findFragmentByTag("10");
+                        weatherFragment.drawerLayout.closeDrawers();
+                        weatherFragment.swipeRefresh.setRefreshing(true);
+                        weatherFragment.requestWeather(weatherId);
                     }
 
 
