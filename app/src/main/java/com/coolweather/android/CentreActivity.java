@@ -1,10 +1,14 @@
 package com.coolweather.android;
 
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTabHost;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TabHost;
 
@@ -62,14 +66,30 @@ public class CentreActivity extends FragmentActivity {
 
         //得到fragment的个数
         int count = fragmentArray.length;
-        for(int i = 0; i < count; i++){
+        for( int i = 0; i < count; i++){
+
             //为每一个Tab按钮设置图标、文字和内容 .newTabSpec(""+i)为每个子标签添加标识
             TabHost.TabSpec tabSpec = mTabHost.newTabSpec("1"+i).setIndicator(getTabItemView(i));
             //将Tab按钮添加进Tab选项卡中
             mTabHost.addTab(tabSpec, fragmentArray[i], null);
             //设置Tab按钮的背景
             //mTabHost.getTabWidget().getChildAt(i).setBackgroundResource(R.drawable.selector_tab_background);
+
         }
+
+
+        mTabHost.getTabWidget().getChildTabViewAt(0).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //恢复系统状态为透明
+                if (Build.VERSION.SDK_INT >= 21){
+                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                }
+                //由于已经覆写了点击方法，所以需要实现tab切换
+                mTabHost.setCurrentTab(0);
+                mTabHost.getTabWidget().requestFocus(View.FOCUS_FORWARD);
+            }
+        });
     }
 
     /**

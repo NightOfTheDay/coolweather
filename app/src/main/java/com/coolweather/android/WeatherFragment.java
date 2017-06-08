@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -91,16 +92,13 @@ public class WeatherFragment extends Fragment {
             parent.removeView(view);
         }
 
+        //设置系统状态为透明
+        statusBar();
         //下拉刷新
         swipeRefresh = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
         //进度条颜色
         swipeRefresh.setColorSchemeResources(R.color.colorPrimary);
-        //设置系统状态为透明
-        if (Build.VERSION.SDK_INT >= 21){
-            View decorView = getActivity().getWindow().getDecorView();
-            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN|View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-            getActivity().getWindow().setStatusBarColor(Color.TRANSPARENT);
-        }
+
         //初始化组件
         weatherLayout  = (ScrollView) view.findViewById(R.id.weather_layout);
         titleCity = (TextView) view.findViewById(R.id.title_city);
@@ -305,5 +303,14 @@ public class WeatherFragment extends Fragment {
     }
 
 
+    //设置系统状态为透明
+    public void statusBar(){
+        //设置系统状态为透明
+        if (Build.VERSION.SDK_INT >= 21){
+            View decorView = getActivity().getWindow().getDecorView();
+            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN|View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+            getActivity().getWindow().setStatusBarColor(Color.TRANSPARENT);
+        }
+    }
 
 }

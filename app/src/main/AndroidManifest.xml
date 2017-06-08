@@ -25,7 +25,7 @@
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="vcpeW5z50fpRqrGaI1lMHBWFuG0jgMDU" />
-<!---->
+
         <activity
             android:name=".WelcomeActivity"
             android:theme="@style/StartAppTheme">
@@ -38,7 +38,9 @@
         <activity android:name=".LogInActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".MainActivity" />
-        <activity android:name=".CentreActivity"></activity>
+        <activity
+            android:name=".CentreActivity"
+            android:theme="@style/AppTheme" />
 
         <service
             android:name=".AutoUpdateService"
@@ -57,7 +59,7 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-
+        <activity android:name=".PersonalDetailsActivity"></activity>
     </application>
 
 </manifest>
