@@ -43,6 +43,7 @@
                         android:layout_centerVertical="true"/>
                     <!--图片-->
                     <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/details_civ"
                         android:layout_marginRight="20dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

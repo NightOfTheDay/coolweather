@@ -14,6 +14,10 @@
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
+    <!--相机兼容4.4之前-->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+
     <application
         android:name="org.litepal.LitePalApplication"
         android:allowBackup="true"
@@ -31,35 +35,40 @@
             android:theme="@style/StartAppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".LogInActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".MainActivity" />
-        <activity
-            android:name=".CentreActivity"
-            android:theme="@style/AppTheme" />
+        <activity android:name=".CentreActivity" android:theme="@style/AppTheme" />
+        <activity android:name=".PersonalDetailsActivity"/>
 
+        <!--8小时启动服务-->
         <service
             android:name=".AutoUpdateService"
             android:enabled="true"
             android:exported="true" />
-        //注册服务百度代码混淆过
+        <!--注册服务百度代码混淆过-->
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
             android:process=":remote" />
-        <!--
- ATTENTION: This was auto-generated to add Google Play services to your project for
-     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
-        -->
+
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-
-        <activity android:name=".PersonalDetailsActivity"></activity>
+        <!--相机注册内容提供器-->
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="PDAhead"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <!--相机指定的共享路径-->
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
     </application>
 
 </manifest>
