@@ -10,6 +10,7 @@ import android.widget.TextView;
 import java.util.List;
 
 /**
+ * 个人中心适配器
  * Created by Administrator on 2017/6/8.
  */
 

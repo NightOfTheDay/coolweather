@@ -51,7 +51,16 @@ public class CentreActivity extends FragmentActivity {
         initView();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //获取底部栏碎片
+        PersonalCenterFragment pcf = (PersonalCenterFragment) getSupportFragmentManager().findFragmentByTag("11");
+        if(pcf!=null && !"".equals(pcf)){
+            pcf.assignment();
+        }
 
+    }
 
     /**
      * 初始化组件

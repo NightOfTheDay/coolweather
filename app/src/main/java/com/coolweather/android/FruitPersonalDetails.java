@@ -1,13 +1,13 @@
 package com.coolweather.android;
 
 /**
- * 个人中心列表
+ * 个人信息列表
  * Created by Administrator on 2017/6/8.
  */
 
-public class Fruit {
+public class FruitPersonalDetails {
     private String name;
-    private int imageId;
+    private String hint;
 
     public String getName() {
         return name;
@@ -17,11 +17,11 @@ public class Fruit {
         this.name = name;
     }
 
-    public int getImageId() {
-        return imageId;
+    public String getHint() {
+        return hint;
     }
 
-    public void setImageId(int imageId) {
-        this.imageId = imageId;
+    public void setHint(String hint) {
+        this.hint = hint;
     }
 }
