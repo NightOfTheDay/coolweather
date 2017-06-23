@@ -46,7 +46,7 @@ public class FruitPersonalDetailsAdapter extends RecyclerView.Adapter<FruitPerso
     public void onBindViewHolder(FruitPersonalDetailsAdapter.ViewHolder holder, int position) {
         FruitPersonalDetails fruitPersonalDetails = fruitList.get(position);
         holder.textTradeName.setText(fruitPersonalDetails.getName());
-        holder.textContent.setText(fruitPersonalDetails.getHint());
+        holder.textContent.setHint(fruitPersonalDetails.getHint());
     }
 
     @Override

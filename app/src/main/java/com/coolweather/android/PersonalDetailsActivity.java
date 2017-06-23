@@ -68,7 +68,7 @@ public class PersonalDetailsActivity extends AppCompatActivity implements View.O
         //添加数据
         List<FruitPersonalDetails> fruitList = data();
         //获取列表
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView_personal_details);
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView_personal_details_list);
         //水平分割线
         /*recyclerView.addItemDecoration(new DividerItemDecoration(
                 getActivity(), DividerItemDecoration.HORIZONTAL_LIST));*/
@@ -108,7 +108,7 @@ public class PersonalDetailsActivity extends AppCompatActivity implements View.O
         String headPortrait = user.get(0).getHeadPortrait();
         Log.d("PersonalDetailsActivity", "headPortrait: "+headPortrait);
         if (headPortrait!=null && !"".equals(headPortrait)){
-           Glide.with(this).load(headPortrait).into(circleImageView);
+           Glide.with(this).load(headPortrait).placeholder(R.mipmap.ic_launcher).into(circleImageView);
         }
     }
 

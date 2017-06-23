@@ -60,7 +60,7 @@
 
             <!--列表主内容-->
             <android.support.v7.widget.RecyclerView
-                android:id="@+id/recyclerView_personal_details"
+                android:id="@+id/recyclerView_personal_details_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="40dp">
