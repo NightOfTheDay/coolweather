@@ -75,6 +75,8 @@ public class WeatherFragment extends Fragment {
 
     private String weatherId;
 
+    public ChooseAreaFragment cf;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -115,6 +117,10 @@ public class WeatherFragment extends Fragment {
         /*滑动菜单*/
         drawerLayout = (DrawerLayout)view.findViewById(R.id.drawer_layout);
         navButton = (Button)view.findViewById(R.id.nav_button);
+
+        /*cf = (ChooseAreaFragment) view.findViewById(R.id.choose_area_fragment);
+        cf = (ChooseAreaFragment) centreActivity.getFragmentManager().findFragmentById(R.id.choose_area_fragment);
+        cf.setLocation("去你的");*/
         return view;
     }
 

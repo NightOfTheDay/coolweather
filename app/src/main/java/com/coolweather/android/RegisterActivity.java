@@ -58,6 +58,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        ActivityCollector.addActivity(this);
         //初始化
         editAccount = (EditText)findViewById(R.id.edit_account);
         editPass = (EditText)findViewById(R.id.edit_pass);

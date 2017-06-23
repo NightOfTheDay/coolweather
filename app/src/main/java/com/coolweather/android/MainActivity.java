@@ -5,31 +5,21 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
-import com.baidu.mapapi.SDKInitializer;
-import com.baidu.mapapi.map.BaiduMap;
-import com.baidu.mapapi.map.MapStatusUpdate;
-import com.baidu.mapapi.map.MapStatusUpdateFactory;
-import com.baidu.mapapi.map.MapView;
-import com.baidu.mapapi.map.MyLocationData;
-import com.baidu.mapapi.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * 城市选择 定位活动
@@ -47,14 +37,7 @@ public class MainActivity extends AppCompatActivity {
         mLocationClient.registerLocationListener(new MyLocationListener());
         setContentView(R.layout.activity_main);
 
-        //提取缓存
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-        //判断跳那个活动
-        if (prefs.getString("weather",null) != null){
-            Intent intent = new Intent(MainActivity.this,CentreActivity.class);
-            startActivity(intent);
-            finish();
-        }
+        ActivityCollector.addActivity(this);
 
 
         //权限list
@@ -86,7 +69,15 @@ public class MainActivity extends AppCompatActivity {
         pd.setCancelable(false);
         pd.show();
 
+        //提取缓存
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
 
+        //判断跳那个活动
+        if (prefs.getString("weather",null) != null){
+            Intent intent = new Intent(MainActivity.this,CentreActivity.class);
+            startActivity(intent);
+            finish();
+        }
 
     }
 
@@ -141,6 +132,9 @@ public class MainActivity extends AppCompatActivity {
                         pd.dismiss();
                         ChooseAreaFragment cf = (ChooseAreaFragment)getSupportFragmentManager().findFragmentById(R.id.choose_area_fragment);
                         cf.setLocation(location);
+                        SharedPreferences.Editor sharedata = getSharedPreferences("data", 0).edit();
+                        sharedata.putString("location",location);
+                        sharedata.commit();
 
                     }
                 });

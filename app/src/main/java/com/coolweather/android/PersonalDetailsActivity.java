@@ -25,6 +25,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -53,6 +54,9 @@ public class PersonalDetailsActivity extends AppCompatActivity implements View.O
 
     private CardView detailsCv;
     private CircleImageView circleImageView;
+    private Button button;
+
+
     //列表
     private RecyclerView recyclerView;
     private String[] names = {"用户名","性别","爱好","出生日期"};
@@ -62,13 +66,43 @@ public class PersonalDetailsActivity extends AppCompatActivity implements View.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personal_details);
+
+        ActivityCollector.addActivity(this);
+
         detailsCv = (CardView) findViewById(R.id.details_cv);
         detailsCv.setOnClickListener(this);
         circleImageView = (CircleImageView)findViewById(R.id.details_civ);
+        button = (Button) findViewById(R.id.back_button);
+
+        button.setOnClickListener(this);
+
+        //从数据库查询列表数据
+        List<User> list = DataSupport.findAll(User.class);
+        String name = list.get(0).getName();
+        String sex = list.get(0).getSex();
+        String hobby = list.get(0).getHobby();
+        String birthday = list.get(0).getBirthday();
+
+        if (name!=null && !"".equals(name)){
+            hints[0] = name;
+        }
+        if (sex!=null && !"".equals(sex)){
+            hints[1] = sex;
+        }
+        if (hobby!=null && !"".equals(hobby)){
+            hints[2] = hobby;
+        }
+        if (birthday!=null && !"".equals(birthday)){
+            hints[3] = birthday;
+        }
+
+
+
+
         //添加数据
         List<FruitPersonalDetails> fruitList = data();
         //获取列表
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView_personal_details);
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView_personal_details_list);
         //水平分割线
         /*recyclerView.addItemDecoration(new DividerItemDecoration(
                 getActivity(), DividerItemDecoration.HORIZONTAL_LIST));*/
@@ -135,6 +169,9 @@ public class PersonalDetailsActivity extends AppCompatActivity implements View.O
                             }
                         }).create().show();
                 break;
+            case R.id.back_button:
+                finish();
+                break;
             default:
                 break;
         }
@@ -196,7 +233,7 @@ public class PersonalDetailsActivity extends AppCompatActivity implements View.O
                     //存服务器
                 }
                 break;
-            case 1:
+            case 1://相册
                 if (resultCode == RESULT_OK){
                     //判断手机系统版本号
                     if (Build.VERSION.SDK_INT >= 19){

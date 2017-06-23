@@ -29,6 +29,8 @@ public class WelcomeActivity extends AppCompatActivity {
         //不显示系统的标题栏，保证windowBackground和界面activity_main的大小一样，显示在屏幕不会有错位（去掉这一行试试就知道效果了）
        // getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_welcome);
+        ActivityCollector.addActivity(this);
+
         //启动线程
         new MyAsyncTask().execute();
     }

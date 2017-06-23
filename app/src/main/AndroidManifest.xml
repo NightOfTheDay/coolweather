@@ -28,7 +28,7 @@
         //name固定，value申请的key
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="vcpeW5z50fpRqrGaI1lMHBWFuG0jgMDU" />
+            android:value="T6AtPugEVwOSnNprpDPb5zYS1PozkydC" />
 
         <activity
             android:name=".WelcomeActivity"

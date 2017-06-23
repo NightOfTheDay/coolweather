@@ -43,7 +43,7 @@ public class CentreActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_centre);
-
+        ActivityCollector.addActivity(this);
         //无缓存是去服务器查信息
         String weatherId = getIntent().getStringExtra("weather_id");
         this.setWeatherId(weatherId);

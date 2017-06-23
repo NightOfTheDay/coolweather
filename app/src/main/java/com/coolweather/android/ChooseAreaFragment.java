@@ -2,9 +2,11 @@ package com.coolweather.android;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -82,16 +84,17 @@ public class ChooseAreaFragment extends Fragment {
     }
 
     public void setLocation(String location) {
+        Log.d("ChooseAreaFragment", "onCreateView2222: "+locationText);
         if (!"定位失败".equals(location)){
             locationText.setClickable(true);
             locationText.setText(location);
         }else {
             locationText.setText("定位："+location);
         }
-
         this.location = location;
     }
 
+    View view;
     /**
      * 加载碎片初始化
      * @param inflater
@@ -102,7 +105,7 @@ public class ChooseAreaFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.choose_area,container,false);
+        view = inflater.inflate(R.layout.choose_area,container,false);
         titleText = (TextView) view.findViewById(R.id.title_text);
         backButton = (Button) view.findViewById(R.id.back_button);
         listView = (ListView) view.findViewById(R.id.list_view);
@@ -110,8 +113,14 @@ public class ChooseAreaFragment extends Fragment {
         listView.setAdapter(adapter);
         locationText = (TextView) view.findViewById(R.id.location_text);
 
+        /*获取定位信息*/
+        SharedPreferences pref = getActivity().getSharedPreferences("data",0);
+        String data = pref.getString("location", null);
+        locationText.setText(data);
+        location = data;
         return view;
     }
+
 
 
 
@@ -269,6 +278,8 @@ public class ChooseAreaFragment extends Fragment {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String responseText = response.body().string();
+                //String responseText = "[{\"id\":\"1\",\"name\":\"中国\"}]";
+                Log.d("55555", "onResponse: "+responseText);
                 boolean result = false;
                 if ("province".equals(type)){
                     result = Utility.handleProvinceResponse(responseText);//解析和处理服务器返回的省级数据
