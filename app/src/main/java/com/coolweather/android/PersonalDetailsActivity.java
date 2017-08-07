@@ -142,7 +142,7 @@ public class PersonalDetailsActivity extends AppCompatActivity implements View.O
         String headPortrait = user.get(0).getHeadPortrait();
         Log.d("PersonalDetailsActivity", "headPortrait: "+headPortrait);
         if (headPortrait!=null && !"".equals(headPortrait)){
-           Glide.with(this).load(headPortrait).into(circleImageView);
+           Glide.with(this).load(headPortrait).placeholder(R.mipmap.ic_launcher).into(circleImageView);
         }
     }
 
