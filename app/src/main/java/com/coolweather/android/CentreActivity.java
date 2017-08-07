@@ -1,24 +1,30 @@
 package com.coolweather.android;
 
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTabHost;
-import android.util.Log;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TabHost;
+import android.widget.TabWidget;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 中心布局
  */
-public class CentreActivity extends FragmentActivity {
+public class CentreActivity extends FragmentActivity implements ViewPager.OnPageChangeListener, TabHost.OnTabChangeListener{
 
     //定义FragmentTabHost对象
     private FragmentTabHost mTabHost;
+
 
     //定义一个布局
     private LayoutInflater layoutInflater;
@@ -39,6 +45,10 @@ public class CentreActivity extends FragmentActivity {
         this.weatherId = weatherId;
     }
 
+    private List<Fragment> list = new ArrayList<Fragment>();
+
+    private ViewPager vp;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,8 +57,9 @@ public class CentreActivity extends FragmentActivity {
         //无缓存是去服务器查信息
         String weatherId = getIntent().getStringExtra("weather_id");
         this.setWeatherId(weatherId);
-
+        //初始化组件
         initView();
+        initPage();//初始化页面
     }
 
     @Override
@@ -66,12 +77,25 @@ public class CentreActivity extends FragmentActivity {
      * 初始化组件
      */
     private void initView(){
+        //菜单滑动
+        vp = (ViewPager) findViewById(R.id.pager);
+        /*实现OnPageChangeListener接口,目的是监听Tab选项卡的变化，然后通知ViewPager适配器切换界面*/
+        /*简单来说,是为了让ViewPager滑动的时候能够带着底部菜单联动*/
+
+        vp.addOnPageChangeListener(this);//设置页面切换时的监听器
+
+           vp.getAdapter();
+
         //实例化布局对象
         layoutInflater = LayoutInflater.from(this);
 
         //实例化TabHost对象，得到TabHost
         mTabHost = (FragmentTabHost)findViewById(android.R.id.tabhost);
-        mTabHost.setup(this, getSupportFragmentManager(), R.id.realtabcontent);
+        mTabHost.setup(this, getSupportFragmentManager(), R.id.pager);
+
+        /*实现setOnTabChangedListener接口,目的是为监听界面切换），然后实现TabHost里面图片文字的选中状态切换*/
+        /*简单来说,是为了当点击下面菜单时,上面的ViewPager能滑动到对应的Fragment*/
+        mTabHost.setOnTabChangedListener(this);
 
         //得到fragment的个数
         int count = fragmentArray.length;
@@ -81,8 +105,10 @@ public class CentreActivity extends FragmentActivity {
             TabHost.TabSpec tabSpec = mTabHost.newTabSpec("1"+i).setIndicator(getTabItemView(i));
             //将Tab按钮添加进Tab选项卡中
             mTabHost.addTab(tabSpec, fragmentArray[i], null);
+            mTabHost.setTag(i);
             //设置Tab按钮的背景
             //mTabHost.getTabWidget().getChildAt(i).setBackgroundResource(R.drawable.selector_tab_background);
+
 
         }
 
@@ -110,6 +136,49 @@ public class CentreActivity extends FragmentActivity {
         imageView.setImageResource(mImageViewArray[index]);
         return view;
     }
+
+
+    /*初始化Fragment*/
+    private void initPage() {
+        WeatherFragment fragment1 = new WeatherFragment();
+        PersonalCenterFragment fragment2 = new PersonalCenterFragment();
+
+        list.add(fragment1);
+        list.add(fragment2);
+
+        //绑定Fragment适配器
+        vp.setAdapter(new MyFragmentAdapter(getSupportFragmentManager(), list));
+        mTabHost.getTabWidget().setDividerDrawable(null);
+    }
+
+
+    @Override
+    public void onPageScrollStateChanged(int arg0) {
+
+    }
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    //页面跳转完毕的时候调用的。
+    @Override
+    public void onPageSelected(int arg0) {//arg0是表示你当前选中的页面位置Postion
+        TabWidget widget = mTabHost.getTabWidget();
+        int oldFocusability = widget.getDescendantFocusability();
+        widget.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);//设置View覆盖子类控件而直接获得焦点
+        mTabHost.setCurrentTab(arg0);//根据位置Postion设置当前的Tab
+        widget.setDescendantFocusability(oldFocusability);//设置取消分割线
+
+    }
+
+
+    @Override
+    public void onTabChanged(String tabId) {//Tab改变的时候调用
+        int position = mTabHost.getCurrentTab();
+        vp.setCurrentItem(position);//把选中的Tab的位置赋给适配器，让它控制页面切换
+    }
+
 
 
 }

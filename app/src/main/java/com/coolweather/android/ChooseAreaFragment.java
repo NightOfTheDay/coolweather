@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -142,7 +143,8 @@ public class ChooseAreaFragment extends Fragment {
                     getActivity().finish();
                 }else if (getActivity() instanceof CentreActivity){
                     CentreActivity activity = (CentreActivity)getActivity();
-                    WeatherFragment weatherFragment = (WeatherFragment)activity.getSupportFragmentManager().findFragmentByTag("10");
+                    ViewPager vp = (ViewPager)activity.findViewById(R.id.pager);
+                    WeatherFragment weatherFragment = (WeatherFragment)(vp.getAdapter().instantiateItem(vp,0));
                     weatherFragment.drawerLayout.closeDrawers();
                     weatherFragment.swipeRefresh.setRefreshing(true);
                     weatherFragment.requestWeather(location);
@@ -171,10 +173,15 @@ public class ChooseAreaFragment extends Fragment {
                         getActivity().finish();
                     }else if (getActivity() instanceof CentreActivity){
                         CentreActivity activity = (CentreActivity)getActivity();
-                        WeatherFragment weatherFragment = (WeatherFragment)activity.getSupportFragmentManager().findFragmentByTag("10");
+                        Log.d("ChooseAreaFragment", "onClick111: "+activity);
+                        //WeatherFragment weatherFragment = (WeatherFragment)activity.getSupportFragmentManager().findFragmentByTag("10");
+                        //WeatherFragment weatherFragment = (WeatherFragment)activity.getSupportFragmentManager().findFragmentByTag("Android:switcher:" + R.id.pager + ":0");
+                        ViewPager vp = (ViewPager)activity.findViewById(R.id.pager);
+                        WeatherFragment weatherFragment = (WeatherFragment)(vp.getAdapter().instantiateItem(vp,0));
                         weatherFragment.drawerLayout.closeDrawers();
                         weatherFragment.swipeRefresh.setRefreshing(true);
                         weatherFragment.requestWeather(weatherId);
+
                     }
 
 
